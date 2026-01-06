@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude -g
-SRC = src/grid.c src/pathfinder.c src/robot.c src/structures.c src/utils.c src/main.c
+SRC = src/grid.c src/pathfinder.c src/robot.c src/structures.c src/utils.c src/map.c src/main.c
 OBJ = $(SRC:.c=.o)
 EXEC = robot_project
 

@@ -67,3 +67,12 @@ void grid_print(Grid *g) {
         printf("\n");
     }
 }
+
+void grid_clear(Grid *g) {
+    for (int i = 0; i < g->rows; i++) {
+        for (int j = 0; j < g->cols; j++) {
+            g->cells[i][j] = CELL_EMPTY;
+        }
+    }
+}
+

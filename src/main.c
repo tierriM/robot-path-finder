@@ -4,6 +4,8 @@
 #include "grid.h"
 #include "robot.h"
 #include "structures.h"
+#include "map.h"
+
 
 int main(void) {
     /* ---------- Criar grid ---------- */
@@ -12,26 +14,24 @@ int main(void) {
 
     Grid *grid = grid_create(rows, cols);
 
-    /* ---------- Obstáculos ---------- */
-    grid_set_cell(grid, 1, 2, CELL_OBSTACLE);
-    grid_set_cell(grid, 2, 2, CELL_OBSTACLE);
-    grid_set_cell(grid, 3, 2, CELL_OBSTACLE);
-    grid_set_cell(grid, 4, 4, CELL_OBSTACLE);
-
-    /* ---------- Packages ---------- */
-    Point packages[] = {
-        {0, 6},
-        {4, 6},
-        {5, 1}
-    };
+    Point start = {0, 0};
     int num_packages = 3;
+    int max_obstacles = 10;
+    Point packages[num_packages];
+
+    map_generate_random(
+        grid,
+        max_obstacles,
+        num_packages,
+        &start,
+        packages
+    );
 
     for (int i = 0; i < num_packages; i++) {
         grid_set_cell(grid, packages[i].x, packages[i].y, CELL_PACKAGE);
     }
 
     /* ---------- Robot ---------- */
-    Point start = {0, 0};
     grid_set_cell(grid, start.x, start.y, CELL_ROBOT);
 
     Robot *robot = robot_create(start, packages, num_packages);

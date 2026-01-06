@@ -26,5 +26,7 @@ int  grid_is_valid(Grid *g, int x, int y);
 int  grid_is_walkable(Grid *g, int x, int y);
 
 void grid_print(Grid *g);
+void grid_clear(Grid *g);
+
 
 #endif

@@ -15,18 +15,41 @@ typedef struct {
     int **cells;
 } Grid;
 
-/* Funções da grid */
-Grid* grid_create(int rows, int cols);
-void grid_free(Grid *g);
+/**
+ * Cria uma nova grid
+ */
+Grid* gridCreate(int rows, int cols);
+/**
+ * Liberta a memória da grid
+ */
+void gridFree(Grid *g);
 
-void grid_set_cell(Grid *g, int x, int y, int value);
-int  grid_get_cell(Grid *g, int x, int y);
+/**
+ * Define o valor de uma célula
+ */
+void gridSetCell(Grid *g, int x, int y, int value);
+/**
+ * Obtém o valor de uma célula
+ */
+int  gridGetCell(Grid *g, int x, int y);
 
-int  grid_is_valid(Grid *g, int x, int y);
-int  grid_is_walkable(Grid *g, int x, int y);
+/**
+ * Verifica se a posição é válida na grid
+ */
+int  gridIsValid(Grid *g, int x, int y);
+/**
+ * Verifica se a célula é caminhável
+ */
+int  gridIsWalkable(Grid *g, int x, int y);
 
-void grid_print(Grid *g);
-void grid_clear(Grid *g);
+/**
+ * Imprime a grid no terminal
+ */
+void gridPrint(Grid *g);
+/**
+ * Limpa a grid
+ */
+void gridClear(Grid *g);
 
 
 #endif

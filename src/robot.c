@@ -5,75 +5,84 @@
 #include "pathfinder.h"
 #include "utils.h"
 
-/* Adiciona um ponto ao caminho completo */
-static void robot_append_path(Robot *r, Point *path, int length) {
+/**
+ * Adiciona um ponto ao caminho completo
+ */
+static void robotAppendPath(Robot *r, Point *path, int length) {
     for (int i = 0; i < length; i++) {
-        if (r->full_path_length < r->full_path_capacity) {
-            r->full_path[r->full_path_length++] = path[i];
+        if (r->fullPathLength < r->fullPathCapacity) {
+            r->fullPath[r->fullPathLength++] = path[i];
         }
     }
 }
 
-Robot* robot_create(Point start, Point *packages, int num_packages) {
+/**
+ * Inicializa o robô
+ */
+Robot* robotCreate(Point start, Point *packages, int numPackages) {
     Robot *r = malloc(sizeof(Robot));
 
     r->position = start;
-    r->start_position = start;
+    r->startPosition = start;
+
 
     r->packages = packages;
-    r->num_packages = num_packages;
+    r->numPackages = numPackages;
+    r->visited = calloc(numPackages, sizeof(int));
 
-    r->visited = calloc(num_packages, sizeof(int));
-
-    r->full_path_capacity = 1000; // suficiente para grids médias
-    r->full_path_length = 0;
-    r->full_path = malloc(sizeof(Point) * r->full_path_capacity);
+    r->fullPathCapacity = 1000;
+    r->fullPathLength = 0;
+    r->fullPath = malloc(sizeof(Point) * r->fullPathCapacity);
 
     return r;
 }
 
-void robot_free(Robot *r) {
+/**
+ * Liberta a memória do robô
+ */
+void robotFree(Robot *r) {
     if (!r) return;
     free(r->visited);
-    free(r->full_path);
+    free(r->fullPath);
     free(r);
 }
 
-/*
+/**
  * Planeamento completo:
  * - escolhe ordem das packages (vizinho mais próximo)
  * - calcula caminhos com Dijkstra (com pais)
  * - guarda o caminho completo
  */
-void robot_plan_route(Robot *r, Grid *g) {
-    int remaining = r->num_packages;
+void robotPlanRoute(Robot *r, Grid *g) {
+    int remaining = r->numPackages;
     Point current = r->position;
 
     while (remaining > 0) {
     int best = -1;
-    int best_dist = INT_MAX;
-    Point best_path[1024];
-    int best_path_len = 0;
+    int bestDist = INT_MAX;
+    Point bestPath[1024];
+    int bestPathLen = 0;
 
-    for (int i = 0; i < r->num_packages; i++) {
+
+    for (int i = 0; i < r->numPackages; i++) {
         if (r->visited[i]) continue;
 
-        Point temp_path[1024];
-        int len = dijkstra_path(
+        Point tempPath[1024];
+        int len = dijkstraPath(
             g,
             current,
             r->packages[i],
-            temp_path,
+            tempPath,
             1024
         );
 
-        if (len > 0 && len < best_dist) {
-            best_dist = len;
+        if (len > 0 && len < bestDist) {
+            bestDist = len;
             best = i;
-            best_path_len = len;
+            bestPathLen = len;
 
             for (int k = 0; k < len; k++)
-                best_path[k] = temp_path[k];
+                bestPath[k] = tempPath[k];
         }
     }
 
@@ -83,7 +92,7 @@ void robot_plan_route(Robot *r, Grid *g) {
     }
 
     /* Guardar caminho (ignorar ponto inicial para não duplicar) */
-    robot_append_path(r, best_path + 1, best_path_len - 1);
+    robotAppendPath(r, bestPath + 1, bestPathLen - 1);
 
     current = r->packages[best];
     r->visited[best] = 1;
@@ -92,39 +101,42 @@ void robot_plan_route(Robot *r, Grid *g) {
 
 
     /* Voltar à posição inicial */
-    Point return_path[1024];
-    int return_len = dijkstra_path(
+    Point returnPath[1024];
+    int returnLen = dijkstraPath(
         g,
         current,
-        r->start_position,
-        return_path,
+        r->startPosition,
+        returnPath,
         1024
     );
 
-    robot_append_path(r, return_path + 1, return_len - 1);
+    robotAppendPath(r, returnPath + 1, returnLen - 1);
 }
 
-void robot_execute(Robot *r, Grid *g) {
+/**
+ * Executa o movimento do robô
+ */
+void robotExecute(Robot *r, Grid *g) {
     printf("Execução do robot:\n");
     
-    clear_screen();
-    grid_print(g);
-    delay_ms(3000);
+    clearScreen();
+    gridPrint(g);
+    delayMs(3000);
     printf("\n");
 
-    for (int i = 0; i < r->full_path_length; i++) {
-        Point next = r->full_path[i];
+    for (int i = 0; i < r->fullPathLength; i++) {
+        Point next = r->fullPath[i];
 
-        grid_set_cell(g, r->position.x, r->position.y, CELL_EMPTY);
+        gridSetCell(g, r->position.x, r->position.y, CELL_EMPTY);
         r->position = next;
-        grid_set_cell(g, r->position.x, r->position.y, CELL_ROBOT);
+        gridSetCell(g, r->position.x, r->position.y, CELL_ROBOT);
 
-        clear_screen();
-        grid_print(g);
+        clearScreen();
+        gridPrint(g);
         printf("\n");
 
 
-        delay_ms(500);
+        delayMs(500);
     }
 
     printf("Missão concluída. Robot voltou à base.\n");

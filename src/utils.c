@@ -8,7 +8,10 @@
     #include <stdlib.h>
 #endif
 
-void delay_ms(int ms) {
+/**
+ * Delay em milissegundos
+ */
+void delayMs(int ms) {
 #ifdef _WIN32
     Sleep(ms);
 #else
@@ -16,7 +19,10 @@ void delay_ms(int ms) {
 #endif
 }
 
-void clear_screen(void) {
+/**
+ * Limpa o ecrã do terminal
+ */
+void clearScreen(void) {
 #ifdef _WIN32
     system("cls");
 #else

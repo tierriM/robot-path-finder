@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include "grid.h"
 
-Grid* grid_create(int rows, int cols) {
+/**
+ * Cria uma nova grid
+ */
+Grid* gridCreate(int rows, int cols) {
     Grid *g = malloc(sizeof(Grid));
     if (!g) return NULL;
 
@@ -20,7 +23,10 @@ Grid* grid_create(int rows, int cols) {
     return g;
 }
 
-void grid_free(Grid *g) {
+/**
+ * Liberta a memória da grid
+ */
+void gridFree(Grid *g) {
     if (!g) return;
 
     for (int i = 0; i < g->rows; i++) {
@@ -30,31 +36,46 @@ void grid_free(Grid *g) {
     free(g);
 }
 
-int grid_is_valid(Grid *g, int x, int y) {
+/**
+ * Verifica se a posição é válida na grid
+ */
+int gridIsValid(Grid *g, int x, int y) {
     return x >= 0 && x < g->rows &&
            y >= 0 && y < g->cols;
 }
 
-int grid_is_walkable(Grid *g, int x, int y) {
-    if (!grid_is_valid(g, x, y))
+/**
+ * Verifica se a célula é caminhável
+ */
+int gridIsWalkable(Grid *g, int x, int y) {
+    if (!gridIsValid(g, x, y))
         return 0;
 
     return g->cells[x][y] != CELL_OBSTACLE;
 }
 
-void grid_set_cell(Grid *g, int x, int y, int value) {
-    if (grid_is_valid(g, x, y)) {
+/**
+ * Define o valor de uma célula
+ */
+void gridSetCell(Grid *g, int x, int y, int value) {
+    if (gridIsValid(g, x, y)) {
         g->cells[x][y] = value;
     }
 }
 
-int grid_get_cell(Grid *g, int x, int y) {
-    if (grid_is_valid(g, x, y))
+/**
+ * Obtém o valor de uma célula
+ */
+int gridGetCell(Grid *g, int x, int y) {
+    if (gridIsValid(g, x, y))
         return g->cells[x][y];
     return CELL_OBSTACLE;
 }
 
-void grid_print(Grid *g) {
+/**
+ * Imprime a grid no terminal
+ */
+void gridPrint(Grid *g) {
     for (int i = 0; i < g->rows; i++) {
         for (int j = 0; j < g->cols; j++) {
             switch (g->cells[i][j]) {
@@ -68,7 +89,10 @@ void grid_print(Grid *g) {
     }
 }
 
-void grid_clear(Grid *g) {
+/**
+ * Limpa a grid
+ */
+void gridClear(Grid *g) {
     for (int i = 0; i < g->rows; i++) {
         for (int j = 0; j < g->cols; j++) {
             g->cells[i][j] = CELL_EMPTY;

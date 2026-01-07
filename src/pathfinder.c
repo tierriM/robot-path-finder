@@ -6,7 +6,10 @@
 static const int dx[4] = {-1, 1, 0, 0};
 static const int dy[4] = {0, 0, -1, 1};
 
-int dijkstra_path(Grid *g, Point start, Point end, Point *path, int max_path_length) {
+/**
+ * Calcula o caminho mínimo entre start e end usando Dijkstra
+ */
+int dijkstraPath(Grid *g, Point start, Point end, Point *path, int maxPathLength) {
     int rows = g->rows;
     int cols = g->cols;
 
@@ -23,16 +26,16 @@ int dijkstra_path(Grid *g, Point start, Point end, Point *path, int max_path_len
         }
     }
 
-    MinHeap *heap = heap_create(rows * cols);
+    MinHeap *heap = heapCreate(rows * cols);
 
     Node start_node = {start, 0, 0};
     dist[start.x][start.y] = 0;
-    heap_push(heap, start_node);
+    heapPush(heap, start_node);
 
     int found = 0;
 
-    while (!heap_is_empty(heap)) {
-        Node current = heap_pop(heap);
+    while (!heapIsEmpty(heap)) {
+        Node current = heapPop(heap);
         int x = current.pos.x;
         int y = current.pos.y;
 
@@ -48,7 +51,7 @@ int dijkstra_path(Grid *g, Point start, Point end, Point *path, int max_path_len
             int nx = x + dx[d];
             int ny = y + dy[d];
 
-            if (!grid_is_walkable(g, nx, ny))
+            if (!gridIsWalkable(g, nx, ny))
                 continue;
 
             int new_dist = current.dist + 1;
@@ -57,24 +60,24 @@ int dijkstra_path(Grid *g, Point start, Point end, Point *path, int max_path_len
                 dist[nx][ny] = new_dist;
                 parent[nx][ny] = current.pos;
                 Node next = {{nx, ny}, new_dist, 0};
-                heap_push(heap, next);
+                heapPush(heap, next);
             }
         }
     }
 
-    int path_length = 0;
+    int pathLength = 0;
     if (found) {
         // Reconstruir caminho do end até start usando parent
         Point cur = end;
-        while (!(cur.x == -1 && cur.y == -1) && path_length < max_path_length) {
-            path[path_length++] = cur;
+        while (!(cur.x == -1 && cur.y == -1) && pathLength < maxPathLength) {
+            path[pathLength++] = cur;
             cur = parent[cur.x][cur.y];
         }
         // inverter o caminho para ficar do start até end
-        for (int i = 0; i < path_length / 2; i++) {
+        for (int i = 0; i < pathLength / 2; i++) {
             Point temp = path[i];
-            path[i] = path[path_length - 1 - i];
-            path[path_length - 1 - i] = temp;
+            path[i] = path[pathLength - 1 - i];
+            path[pathLength - 1 - i] = temp;
         }
     }
 
@@ -85,19 +88,22 @@ int dijkstra_path(Grid *g, Point start, Point end, Point *path, int max_path_len
     }
     free(dist);
     free(parent);
-    heap_free(heap);
+    heapFree(heap);
 
     if (found)
-        return path_length;
+        return pathLength;
     else
         return 0; // sem caminho
 }
 
-int dijkstra_find_packages(
+/**
+ * Calcula as distâncias mínimas desde start até todos os packages não visitados
+ */
+int dijkstraFindPackages(
     Grid *g,
     Point start,
     Point *packages,
-    int num_packages,
+    int numPackages,
     int *visited,
     int *distances
 ) {
@@ -113,16 +119,16 @@ int dijkstra_find_packages(
         }
     }
 
-    MinHeap *heap = heap_create(rows * cols);
+    MinHeap *heap = heapCreate(rows * cols);
 
     Node start_node = { start, 0, 0 };
     dist[start.x][start.y] = 0;
-    heap_push(heap, start_node);
+    heapPush(heap, start_node);
 
     int found = 0;
 
-    while (!heap_is_empty(heap) && found < num_packages) {
-        Node current = heap_pop(heap);
+    while (!heapIsEmpty(heap) && found < numPackages) {
+        Node current = heapPop(heap);
         int x = current.pos.x;
         int y = current.pos.y;
 
@@ -130,11 +136,10 @@ int dijkstra_find_packages(
             continue;
 
         /* Verificar se é um package não visitado */
-        for (int i = 0; i < num_packages; i++) {
+        for (int i = 0; i < numPackages; i++) {
             if (!visited[i] &&
                 packages[i].x == x &&
                 packages[i].y == y) {
-
                 distances[i] = current.dist;
                 visited[i] = 1;
                 found++;
@@ -146,7 +151,7 @@ int dijkstra_find_packages(
             int nx = x + dx[d];
             int ny = y + dy[d];
 
-            if (!grid_is_walkable(g, nx, ny))
+            if (!gridIsWalkable(g, nx, ny))
                 continue;
 
             int new_dist = current.dist + 1;
@@ -154,7 +159,7 @@ int dijkstra_find_packages(
             if (new_dist < dist[nx][ny]) {
                 dist[nx][ny] = new_dist;
                 Node next = { {nx, ny}, new_dist, 0 };
-                heap_push(heap, next);
+                heapPush(heap, next);
             }
         }
     }
@@ -164,7 +169,7 @@ int dijkstra_find_packages(
         free(dist[i]);
     free(dist);
 
-    heap_free(heap);
+    heapFree(heap);
 
     return found;
 }

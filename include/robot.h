@@ -6,25 +6,34 @@
 
 typedef struct {
     Point position;
-    Point start_position;
+    Point startPosition;
 
     Point *packages;
-    int num_packages;
+    int numPackages;
     int *visited;
 
-    Point *full_path;
-    int full_path_length;
-    int full_path_capacity;
+    Point *fullPath;
+    int fullPathLength;
+    int fullPathCapacity;
 } Robot;
 
-/* Inicialização */
-Robot* robot_create(Point start, Point *packages, int num_packages);
-void robot_free(Robot *r);
+/**
+ * Inicialização
+ */
+Robot* robotCreate(Point start, Point *packages, int numPackages);
+/**
+ * Liberta a memória do robô
+ */
+void robotFree(Robot *r);
 
-/* Planeamento */
-void robot_plan_route(Robot *r, Grid *g);
+/**
+ * Planeamento
+ */
+void robotPlanRoute(Robot *r, Grid *g);
 
-/* Execução */
-void robot_execute(Robot *r, Grid *g);
+/**
+ * Execução
+ */
+void robotExecute(Robot *r, Grid *g);
 
 #endif

@@ -21,12 +21,26 @@ typedef struct {
     int capacity;
 } MinHeap;
 
-// Funções da Heap
-MinHeap* heap_create(int capacity);
-void heap_free(MinHeap *heap);
+/**
+ * Cria uma MinHeap
+ */
+MinHeap* heapCreate(int capacity);
+/**
+ * Liberta a memória da MinHeap
+ */
+void heapFree(MinHeap *heap);
 
-void heap_push(MinHeap *heap, Node node);
-Node heap_pop(MinHeap *heap);
-int heap_is_empty(MinHeap *heap);
+/**
+ * Insere um Node na MinHeap
+ */
+void heapPush(MinHeap *heap, Node node);
+/**
+ * Remove e retorna o menor Node da MinHeap
+ */
+Node heapPop(MinHeap *heap);
+/**
+ * Verifica se a MinHeap está vazia
+ */
+int heapIsEmpty(MinHeap *heap);
 
 #endif

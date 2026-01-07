@@ -2,15 +2,19 @@
 #include <stdlib.h>
 #include "structures.h"
 
-// Auxiliares
+/**
+ * Função auxiliar para trocar dois Nodes
+ */
 static void swap(Node *a, Node *b) {
     Node temp = *a;
     *a = *b;
     *b = temp;
 }
 
-// Heap
-MinHeap* heap_create(int capacity) {
+/**
+ * Cria uma MinHeap
+ */
+MinHeap* heapCreate(int capacity) {
     MinHeap *heap = malloc(sizeof(MinHeap));
     if (!heap) return NULL;
 
@@ -21,17 +25,26 @@ MinHeap* heap_create(int capacity) {
     return heap;
 }
 
-void heap_free(MinHeap *heap) {
+/**
+ * Liberta a memória da MinHeap
+ */
+void heapFree(MinHeap *heap) {
     if (!heap) return;
     free(heap->data);
     free(heap);
 }
 
-int heap_is_empty(MinHeap *heap) {
+/**
+ * Verifica se a MinHeap está vazia
+ */
+int heapIsEmpty(MinHeap *heap) {
     return heap->size == 0;
 }
 
-void heap_push(MinHeap *heap, Node node) {
+/**
+ * Insere um Node na MinHeap
+ */
+void heapPush(MinHeap *heap, Node node) {
     if (heap->size >= heap->capacity) return;
 
     int i = heap->size++;
@@ -48,7 +61,10 @@ void heap_push(MinHeap *heap, Node node) {
     }
 }
 
-Node heap_pop(MinHeap *heap) {
+/**
+ * Remove e retorna o menor Node da MinHeap
+ */
+Node heapPop(MinHeap *heap) {
     Node min = heap->data[0];
     heap->data[0] = heap->data[--heap->size];
 

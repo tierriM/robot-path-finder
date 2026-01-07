@@ -28,9 +28,9 @@ int dijkstraPath(Grid *g, Point start, Point end, Point *path, int maxPathLength
 
     MinHeap *heap = heapCreate(rows * cols);
 
-    Node start_node = {start, 0, 0};
+    Node startNode = {start, 0, 0};
     dist[start.x][start.y] = 0;
-    heapPush(heap, start_node);
+    heapPush(heap, startNode);
 
     int found = 0;
 
@@ -54,12 +54,12 @@ int dijkstraPath(Grid *g, Point start, Point end, Point *path, int maxPathLength
             if (!gridIsWalkable(g, nx, ny))
                 continue;
 
-            int new_dist = current.dist + 1;
+            int newDist = current.dist + 1;
 
-            if (new_dist < dist[nx][ny]) {
-                dist[nx][ny] = new_dist;
+            if (newDist < dist[nx][ny]) {
+                dist[nx][ny] = newDist;
                 parent[nx][ny] = current.pos;
-                Node next = {{nx, ny}, new_dist, 0};
+                Node next = {{nx, ny}, newDist, 0};
                 heapPush(heap, next);
             }
         }
@@ -94,82 +94,4 @@ int dijkstraPath(Grid *g, Point start, Point end, Point *path, int maxPathLength
         return pathLength;
     else
         return 0; // sem caminho
-}
-
-/**
- * Calcula as distâncias mínimas desde start até todos os packages não visitados
- */
-int dijkstraFindPackages(
-    Grid *g,
-    Point start,
-    Point *packages,
-    int numPackages,
-    int *visited,
-    int *distances
-) {
-    int rows = g->rows;
-    int cols = g->cols;
-
-    /* Inicializar distâncias */
-    int **dist = malloc(rows * sizeof(int*));
-    for (int i = 0; i < rows; i++) {
-        dist[i] = malloc(cols * sizeof(int));
-        for (int j = 0; j < cols; j++) {
-            dist[i][j] = INT_MAX;
-        }
-    }
-
-    MinHeap *heap = heapCreate(rows * cols);
-
-    Node start_node = { start, 0, 0 };
-    dist[start.x][start.y] = 0;
-    heapPush(heap, start_node);
-
-    int found = 0;
-
-    while (!heapIsEmpty(heap) && found < numPackages) {
-        Node current = heapPop(heap);
-        int x = current.pos.x;
-        int y = current.pos.y;
-
-        if (current.dist > dist[x][y])
-            continue;
-
-        /* Verificar se é um package não visitado */
-        for (int i = 0; i < numPackages; i++) {
-            if (!visited[i] &&
-                packages[i].x == x &&
-                packages[i].y == y) {
-                distances[i] = current.dist;
-                visited[i] = 1;
-                found++;
-            }
-        }
-
-        /* Explorar vizinhos */
-        for (int d = 0; d < 4; d++) {
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-
-            if (!gridIsWalkable(g, nx, ny))
-                continue;
-
-            int new_dist = current.dist + 1;
-
-            if (new_dist < dist[nx][ny]) {
-                dist[nx][ny] = new_dist;
-                Node next = { {nx, ny}, new_dist, 0 };
-                heapPush(heap, next);
-            }
-        }
-    }
-
-    /* Libertar memória */
-    for (int i = 0; i < rows; i++)
-        free(dist[i]);
-    free(dist);
-
-    heapFree(heap);
-
-    return found;
 }

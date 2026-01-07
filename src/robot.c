@@ -58,45 +58,45 @@ void robotPlanRoute(Robot *r, Grid *g) {
     Point current = r->position;
 
     while (remaining > 0) {
-    int best = -1;
-    int bestDist = INT_MAX;
-    Point bestPath[1024];
-    int bestPathLen = 0;
+        int best = -1;
+        int bestDist = INT_MAX;
+        Point bestPath[1024];
+        int bestPathLen = 0;
 
 
-    for (int i = 0; i < r->numPackages; i++) {
-        if (r->visited[i]) continue;
+        for (int i = 0; i < r->numPackages; i++) {
+            if (r->visited[i]) continue;
 
-        Point tempPath[1024];
-        int len = dijkstraPath(
-            g,
-            current,
-            r->packages[i],
-            tempPath,
-            1024
-        );
+            Point tempPath[1024];
+            int len = dijkstraPath(
+                g,
+                current,
+                r->packages[i],
+                tempPath,
+                1024
+            );
 
-        if (len > 0 && len < bestDist) {
-            bestDist = len;
-            best = i;
-            bestPathLen = len;
+            if (len > 0 && len < bestDist) {
+                bestDist = len;
+                best = i;
+                bestPathLen = len;
 
-            for (int k = 0; k < len; k++)
-                bestPath[k] = tempPath[k];
+                for (int k = 0; k < len; k++)
+                    bestPath[k] = tempPath[k];
+            }
         }
-    }
 
-    if (best == -1) {
-        printf("Erro: nenhuma package alcançável.\n");
-        return;
-    }
+        if (best == -1) {
+            printf("Erro: nenhuma package alcançável.\n");
+            return;
+        }
 
-    /* Guardar caminho (ignorar ponto inicial para não duplicar) */
-    robotAppendPath(r, bestPath + 1, bestPathLen - 1);
+        /* Guardar caminho (ignorar ponto inicial para não duplicar) */
+        robotAppendPath(r, bestPath + 1, bestPathLen - 1);
 
-    current = r->packages[best];
-    r->visited[best] = 1;
-    remaining--;
+        current = r->packages[best];
+        r->visited[best] = 1;
+        remaining--;
     }
 
 

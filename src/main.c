@@ -9,7 +9,7 @@
 
 int main(void) {
     /* ---------- Criar grid ---------- */
-    int rows = 6;
+    int rows = 8;
     int cols = 8;
 
     Grid *grid = gridCreate(rows, cols);

@@ -106,6 +106,11 @@ void robot_plan_route(Robot *r, Grid *g) {
 
 void robot_execute(Robot *r, Grid *g) {
     printf("Execução do robot:\n");
+    
+    clear_screen();
+    grid_print(g);
+    delay_ms(3000);
+    printf("\n");
 
     for (int i = 0; i < r->full_path_length; i++) {
         Point next = r->full_path[i];
@@ -117,6 +122,7 @@ void robot_execute(Robot *r, Grid *g) {
         clear_screen();
         grid_print(g);
         printf("\n");
+
 
         delay_ms(500);
     }

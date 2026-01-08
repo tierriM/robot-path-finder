@@ -9,13 +9,13 @@
 
 int main(void) {
     /* ---------- Criar grid ---------- */
-    int rows = 8;
-    int cols = 8;
+    int rows = 10;
+    int cols = 20;
 
     Grid *grid = gridCreate(rows, cols);
 
     Point start = {0, 0};
-    int numPackages = 3;
+    int numPackages = 5;
     int maxObstacles = 10;
     Point packages[numPackages];
 

@@ -117,11 +117,9 @@ void robotPlanRoute(Robot *r, Grid *g) {
  * Executa o movimento do robô
  */
 void robotExecute(Robot *r, Grid *g) {
-    printf("Execução do robot:\n");
-    
     clearScreen();
     gridPrint(g);
-    delayMs(3000);
+    delayMs(2000);
     printf("\n");
 
     for (int i = 0; i < r->fullPathLength; i++) {
@@ -136,7 +134,7 @@ void robotExecute(Robot *r, Grid *g) {
         printf("\n");
 
 
-        delayMs(500);
+        delayMs(200);
     }
 
     printf("Missão concluída. Robot voltou à base.\n");

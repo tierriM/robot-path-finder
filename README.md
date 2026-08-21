@@ -1,64 +1,64 @@
-# Projeto C: Planeamento e Execução de Robô em Grid
+# C Project: Grid Robot Planning and Execution
 
-## Descrição
-Este projeto simula o planeamento e execução de um robô que navega por uma grelha (grid) para recolher pacotes, evitando obstáculos e retornando à base. O robô utiliza algoritmos de caminho mínimo (Dijkstra) para calcular rotas eficientes.
+## Description
+This project simulates the planning and execution of a robot navigating a grid to collect packages, avoiding obstacles, and returning to base. The robot uses shortest-path algorithms (Dijkstra) to calculate efficient routes.
 
-## Estrutura do Projeto
+## Project Structure
 
-- `src/` — Código-fonte principal
-  - `main.c` — Função principal e fluxo do programa
-  - `robot.c` — Lógica do robô (criação, planeamento, execução)
-  - `grid.c` — Estruturas e funções para manipulação da grid
-  - `map.c` — Geração de mapas aleatórios
-  - `pathfinder.c` — Algoritmo de Dijkstra para caminhos
-  - `structures.c` — Estruturas auxiliares (heap, node)
-  - `utils.c` — Utilitários (delay, limpar ecrã)
-- `include/` — Headers das funções e estruturas
-- `makefile` — Compilação automatizada
+- `src/` — Main source code
+  - `main.c` — Main function and program workflow
+  - `robot.c` — Robot logic (creation, planning, execution)
+  - `grid.c` — Data structures and functions for grid manipulation
+  - `map.c` — Random map generation
+  - `pathfinder.c` — Dijkstra's algorithm for pathfinding
+  - `structures.c` — Auxiliary data structures (min-heap, node)
+  - `utils.c` — Utilities (delay, clear screen)
+- `include/` — Header files for functions and structures
+- `makefile` — Automated compilation
 
-## Como Compilar
+## How to Compile
 
-1. Certifique-se de que tem o GCC instalado.
-2. No terminal, navegue até à pasta do projeto.
-3. Execute:
+1. Ensure you have GCC installed.
+2. In your terminal, navigate to the project directory.
+3. Run:
 
 ```sh
 make
 ```
 
-O executável será gerado na raiz do projeto.
+The executable will be generated in the root directory.
 
-## Como Executar
+## How to Run
 
-Após compilar, execute:
+After compiling, run:
 
 ```sh
 ./robot_project
 ```
 
-O programa irá:
-- Gerar uma grid aleatória com obstáculos e pacotes
-- Calcular a rota ótima para o robô recolher todos os pacotes
-- Simular o movimento do robô na grid
+The program will:
+- Generate a random grid with obstacles and packages
+- Calculate the optimal route for the robot to collect all packages
+- Simulate the robot's movement across the grid
 
-## Principais Funcionalidades
+## Key Features
 
-- Geração de mapas aleatórios com obstáculos e pacotes
-- Planeamento de rota usando Dijkstra
-- Execução animada do robô na grid
-- Estruturas de dados otimizadas (heap mínima)
+- Random map generation with obstacles and packages
+- Route planning using Dijkstra's algorithm
+- Animated execution of the robot on the grid
+- Optimized data structures (min-heap)
 
-## Estruturas e Algoritmos
+## Data Structures and Algorithms
 
-- **Grid:** Representação da grelha, células livres, obstáculos, pacotes e robô
-- **Robô:** Guarda posição, pacotes a recolher, caminho completo
-- **Dijkstra:** Algoritmo para encontrar o caminho mais curto entre dois pontos
-- **Heap:** Usada para otimizar o Dijkstra
+- **Grid:** Grid representation featuring free cells, obstacles, packages, and the robot
+- **Robot:** Tracks current position, remaining packages to collect, and complete route
+- **Dijkstra:** Algorithm used to find the shortest path between two points
+- **Heap:** Min-heap implementation used to optimize Dijkstra's algorithm
 
-## Personalização
+## Customization
 
-Pode alterar o tamanho da grid, número de pacotes e obstáculos editando as variáveis no início de `main.c`.
+You can adjust grid size, the number of packages, and obstacle density by modifying the configuration variables at the beginning of `main.c`.
 
-## Autoria
+## Author
 
-Trabalho por Tierri Monteiro, para a cadeira de Programação (C), do curso Robótica Colaborativa e Inteligência Industrial (Pós-Laboral), no Instituto Politécnico do Cávado e do Ave
+Developed by Tierri Monteiro for the C Programming course, within the Collaborative Robotics and Industrial Intelligence program at Instituto Politécnico do Cávado e do Ave (IPCA).
